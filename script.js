@@ -1,34 +1,31 @@
 // Configuração do Jogo
 const gameConfig = {
     easy: [
-        { emoji: '🍎', name: 'Maçã', color: 'red' },
-        { emoji: '🟦', name: 'Quadrado', color: 'blue' },
-        { emoji: '🍏', name: 'Maçã Verde', color: 'green' },
-        { emoji: '🍌', name: 'Banana', color: 'yellow' }
+        { image: 'images/red-apple.png', name: 'Maçã', color: 'red' },
+        { image: 'images/blue-car.png', name: 'Carro', color: 'blue' },
+        { image: 'images/green-leaf.png', name: 'Folha', color: 'green' },
+        { image: 'images/yellow-banana.png', name: 'Banana', color: 'yellow' }
     ],
     medium: [
-        { emoji: '🍎', name: 'Maçã', color: 'red' },
-        { emoji: '🍓', name: 'Morango', color: 'red' },
-        { emoji: '🟦', name: 'Quadrado', color: 'blue' },
-        { emoji: '🦋', name: 'Borboleta', color: 'blue' },
-        { emoji: '🍏', name: 'Maçã Verde', color: 'green' },
-        { emoji: '🐸', name: 'Sapo', color: 'green' },
-        { emoji: '🍌', name: 'Banana', color: 'yellow' },
-        { emoji: '⭐', name: 'Estrela', color: 'yellow' }
+        { image: 'images/red-apple.png', name: 'Maçã', color: 'red' },
+        { image: 'images/red-strawberry.png', name: 'Morango', color: 'red' },
+        { image: 'images/blue-car.png', name: 'Carro', color: 'blue' },
+        { image: 'images/blue-butterfly.png', name: 'Borboleta', color: 'blue' },
+        { image: 'images/green-leaf.png', name: 'Folha', color: 'green' },
+        { image: 'images/green-frog.png', name: 'Sapo', color: 'green' },
+        { image: 'images/yellow-banana.png', name: 'Banana', color: 'yellow' }
     ],
     hard: [
-        { emoji: '🍎', name: 'Maçã', color: 'red' },
-        { emoji: '🍓', name: 'Morango', color: 'red' },
-        { emoji: '🌹', name: 'Rosa', color: 'red' },
-        { emoji: '🟦', name: 'Quadrado', color: 'blue' },
-        { emoji: '🦋', name: 'Borboleta', color: 'blue' },
-        { emoji: '🚙', name: 'Carro', color: 'blue' },
-        { emoji: '🍏', name: 'Maçã Verde', color: 'green' },
-        { emoji: '🐸', name: 'Sapo', color: 'green' },
-        { emoji: '🌳', name: 'Árvore', color: 'green' },
-        { emoji: '🍌', name: 'Banana', color: 'yellow' },
-        { emoji: '⭐', name: 'Estrela', color: 'yellow' },
-        { emoji: '🌻', name: 'Girassol', color: 'yellow' }
+        { image: 'images/red-apple.png', name: 'Maçã', color: 'red' },
+        { image: 'images/red-strawberry.png', name: 'Morango', color: 'red' },
+        { image: 'images/red-rose.png', name: 'Rosa', color: 'red' },
+        { image: 'images/blue-car.png', name: 'Carro', color: 'blue' },
+        { image: 'images/blue-butterfly.png', name: 'Borboleta', color: 'blue' },
+        { image: 'images/green-leaf.png', name: 'Folha', color: 'green' },
+        { image: 'images/green-frog.png', name: 'Sapo', color: 'green' },
+        { image: 'images/green-tree.png', name: 'Árvore', color: 'green' },
+        { image: 'images/yellow-banana.png', name: 'Banana', color: 'yellow' },
+        { image: 'images/yellow-rubber-ducky.png', name: 'Patinho', color: 'yellow' }
     ]
 };
 
@@ -169,7 +166,7 @@ function createObjects() {
         objectElement.dataset.index = index;
         
         objectElement.innerHTML = `
-            <div class="object-emoji">${obj.emoji}</div>
+            <img src="${obj.image}" alt="${obj.name}" class="object-image" draggable="false">
             <div class="object-name">${obj.name}</div>
         `;
         

@@ -140,19 +140,21 @@ header h1 {
 
 .objects-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 15px;
-    min-height: 300px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px;
+    min-height: 400px;
     padding: 20px;
     background: #f8f9fa;
     border-radius: 15px;
     border: 3px dashed #ccc;
+    align-items: start;
+    justify-items: center;
 }
 
 /* Objetos Arrastáveis */
 .draggable-object {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
@@ -179,16 +181,22 @@ header h1 {
     transform: scale(1.15);
 }
 
-.object-emoji {
-    font-size: 3em;
+.object-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
     margin-bottom: 5px;
+    pointer-events: none;
 }
 
 .object-name {
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: bold;
     text-align: center;
     color: #333;
+    line-height: 1.2;
+    padding: 0 5px;
 }
 
 /* Cores dos objetos */
