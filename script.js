@@ -34,11 +34,50 @@ let currentLevel = 'easy';
 let score = 0;
 let objectsRemaining = 0;
 let draggedElement = null;
+let soundEnabled = true;
+
+// Sistema de Progresso de Níveis
+const levelOrder = ['easy', 'medium', 'hard'];
+let unlockedLevels = loadProgress();
+
+// Funções de Progresso
+function loadProgress() {
+    const saved = localStorage.getItem('colorGameProgress');
+    if (saved) {
+        return JSON.parse(saved);
+    }
+    // Por padrão, apenas o nível fácil está desbloqueado
+    return ['easy'];
+}
+
+function saveProgress() {
+    localStorage.setItem('colorGameProgress', JSON.stringify(unlockedLevels));
+}
+
+function unlockNextLevel() {
+    const currentIndex = levelOrder.indexOf(currentLevel);
+    if (currentIndex < levelOrder.length - 1) {
+        const nextLevel = levelOrder[currentIndex + 1];
+        if (!unlockedLevels.includes(nextLevel)) {
+            unlockedLevels.push(nextLevel);
+            saveProgress();
+            updateLevelButtons();
+            return nextLevel;
+        }
+    }
+    return null;
+}
+
+function isLevelUnlocked(level) {
+    return unlockedLevels.includes(level);
+}
 
 // Sons (usando Web Audio API para feedback sonoro)
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSuccessSound() {
+    if (!soundEnabled) return;
+    
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     
@@ -74,6 +113,8 @@ function playSuccessSound() {
 }
 
 function playErrorSound() {
+    if (!soundEnabled) return;
+    
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
     
@@ -94,6 +135,13 @@ function playErrorSound() {
 document.addEventListener('DOMContentLoaded', () => {
     setupModal();
     setupLevelButtons();
+    setupSoundToggle();
+    
+    // Garantir que o jogo inicia no primeiro nível desbloqueado
+    if (!isLevelUnlocked(currentLevel)) {
+        currentLevel = unlockedLevels[0] || 'easy';
+    }
+    
     initGame();
 });
 
@@ -131,11 +179,79 @@ function setupLevelButtons() {
     
     levelButtons.forEach(button => {
         button.addEventListener('click', () => {
+            const level = button.dataset.level;
+            
+            // Verificar se o nível está desbloqueado
+            if (!isLevelUnlocked(level)) {
+                showFeedback('🔒 Complete o nível anterior primeiro!', 'error');
+                return;
+            }
+            
             levelButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            currentLevel = button.dataset.level;
+            currentLevel = level;
             restartGame();
         });
+    });
+    
+    updateLevelButtons();
+}
+
+function updateLevelButtons() {
+    const levelButtons = document.querySelectorAll('.level-btn');
+    
+    levelButtons.forEach(button => {
+        const level = button.dataset.level;
+        const isUnlocked = isLevelUnlocked(level);
+        
+        if (isUnlocked) {
+            button.classList.remove('locked');
+            button.disabled = false;
+            // Remover ícone de cadeado se existir
+            const lockIcon = button.querySelector('.lock-icon');
+            if (lockIcon) {
+                lockIcon.remove();
+            }
+        } else {
+            button.classList.add('locked');
+            button.disabled = true;
+            // Adicionar ícone de cadeado se não existir
+            if (!button.querySelector('.lock-icon')) {
+                const lockIcon = document.createElement('span');
+                lockIcon.className = 'lock-icon';
+                lockIcon.textContent = ' 🔒';
+                button.appendChild(lockIcon);
+            }
+        }
+    });
+}
+
+// Toggle de Som
+function setupSoundToggle() {
+    const soundButton = document.getElementById('soundButton');
+    
+    soundButton.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        updateSoundButton();
+    });
+    
+    updateSoundButton();
+}
+
+function updateSoundButton() {
+    const soundButton = document.getElementById('soundButton');
+    soundButton.textContent = soundEnabled ? '🔊 Som' : '🔇 Som';
+    soundButton.classList.toggle('sound-off', !soundEnabled);
+}
+
+// Limpar Caixas
+function clearBoxes() {
+    const boxes = document.querySelectorAll('.color-box');
+    boxes.forEach(box => {
+        const boxContent = box.querySelector('.box-content');
+        if (boxContent) {
+            boxContent.remove();
+        }
     });
 }
 
@@ -143,6 +259,7 @@ function setupLevelButtons() {
 function initGame() {
     score = 0;
     updateScore();
+    clearBoxes();
     createObjects();
     setupDragAndDrop();
 }
@@ -246,21 +363,28 @@ function handleCorrectDrop(box) {
     // Criar partículas
     createParticles(box, draggedElement.dataset.color);
     
-    // Remover objeto com animação
-    draggedElement.style.transition = 'all 0.5s ease';
-    draggedElement.style.transform = 'scale(0) rotate(360deg)';
-    draggedElement.style.opacity = '0';
+    // Tornar o objeto não-arrastável
+    draggedElement.draggable = false;
+    draggedElement.classList.add('placed-in-box');
+    draggedElement.classList.remove('dragging');
     
-    setTimeout(() => {
-        draggedElement.remove();
-        objectsRemaining--;
-        score += 10;
-        updateScore();
-        
-        if (objectsRemaining === 0) {
-            showVictory();
-        }
-    }, 500);
+    // Adicionar o objeto à caixa
+    const boxContent = box.querySelector('.box-content');
+    if (!boxContent) {
+        const content = document.createElement('div');
+        content.className = 'box-content';
+        box.appendChild(content);
+    }
+    box.querySelector('.box-content').appendChild(draggedElement);
+    
+    // Atualizar pontuação e estado
+    objectsRemaining--;
+    score += 10;
+    updateScore();
+    
+    if (objectsRemaining === 0) {
+        showVictory();
+    }
 }
 
 function handleIncorrectDrop() {
@@ -312,7 +436,7 @@ function showFeedback(message, type) {
     const feedback = document.createElement('div');
     feedback.className = 'feedback-message';
     feedback.textContent = message;
-    feedback.style.color = type === 'success' ? '#44ff44' : '#ff4444';
+    feedback.style.color = type === 'success' ? '#22aa22' : '#cc4444';
     
     container.appendChild(feedback);
     
@@ -329,8 +453,41 @@ function updateScore() {
 // Mostrar Vitória
 function showVictory() {
     setTimeout(() => {
+        // Desbloquear próximo nível
+        const nextLevel = unlockNextLevel();
+        
         document.getElementById('finalScore').textContent = score;
-        document.getElementById('victoryMessage').classList.remove('hidden');
+        
+        // Atualizar mensagem de vitória se desbloqueou novo nível
+        const victoryMessage = document.getElementById('victoryMessage');
+        const victoryText = victoryMessage.querySelector('p');
+        const nextLevelButton = document.getElementById('nextLevelButton');
+        
+        // Verificar se não está no último nível
+        const currentIndex = levelOrder.indexOf(currentLevel);
+        const isLastLevel = currentIndex === levelOrder.length - 1;
+        
+        // Mostrar ou esconder o botão de próximo nível
+        if (!isLastLevel) {
+            nextLevelButton.style.display = 'inline-block';
+        } else {
+            nextLevelButton.style.display = 'none';
+        }
+        
+        if (nextLevel) {
+            const levelNames = {
+                'easy': 'Fácil',
+                'medium': 'Médio',
+                'hard': 'Difícil'
+            };
+            victoryText.textContent = `Parabéns! Nível ${levelNames[nextLevel]} desbloqueado! 🔓`;
+        } else if (currentLevel === 'hard') {
+            victoryText.textContent = 'Incrível! Completaste TODOS os níveis! És um mestre das cores! 🏆';
+        } else {
+            victoryText.textContent = 'Classificaste todas as cores corretamente!';
+        }
+        
+        victoryMessage.classList.remove('hidden');
         
         // Efeito de confetti
         for (let i = 0; i < 50; i++) {
@@ -355,11 +512,57 @@ function createConfetti() {
     setTimeout(() => confetti.remove(), 3000);
 }
 
+// Ir para o Próximo Nível
+function goToNextLevel() {
+    const currentIndex = levelOrder.indexOf(currentLevel);
+    if (currentIndex < levelOrder.length - 1) {
+        const nextLevel = levelOrder[currentIndex + 1];
+        
+        // Mudar para o próximo nível
+        currentLevel = nextLevel;
+        
+        // Atualizar botões de nível
+        const levelButtons = document.querySelectorAll('.level-btn');
+        levelButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.level === nextLevel) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Fechar popup e reiniciar jogo no novo nível
+        document.getElementById('victoryMessage').classList.add('hidden');
+        score = 0;
+        initGame();
+    }
+}
+
 // Reiniciar Jogo
 function restartGame() {
     document.getElementById('victoryMessage').classList.add('hidden');
     score = 0;
     initGame();
+}
+
+// Reiniciar Progresso (desbloquear todos os níveis)
+function resetProgress() {
+    if (confirm('Tem certeza que deseja reiniciar todo o progresso? Todos os níveis serão bloqueados novamente, exceto o Fácil.')) {
+        unlockedLevels = ['easy'];
+        saveProgress();
+        currentLevel = 'easy';
+        updateLevelButtons();
+        
+        // Atualizar botão ativo
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.level === 'easy') {
+                btn.classList.add('active');
+            }
+        });
+        
+        restartGame();
+        showFeedback('✨ Progresso reiniciado! Comece do nível Fácil!', 'success');
+    }
 }
 
 // Prevenir comportamento padrão de arrastar imagens
