@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Classificação de Cores</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Modal de Informações -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🎨 Jogo de Classificação de Cores</h2>
+            
+            <div class="info-section">
+                <h3>📚 Benefícios</h3>
+                <p>Este jogo desenvolve o <strong>Raciocínio Lógico</strong> através da <strong>Classificação</strong>. 
+                A criança aprenderá a identificar que objetos diferentes podem ser agrupados sob uma característica 
+                comum (cor), ignorando outros atributos como a forma, o tamanho ou a categoria semântica. 
+                Este treino promove a aquisição de conceitos abstratos.</p>
+            </div>
+
+            <div class="info-section">
+                <h3>📖 Instruções</h3>
+                <ol>
+                    <li>Observa os objetos na área de jogo</li>
+                    <li>Identifica a cor de cada objeto</li>
+                    <li>Arrasta cada objeto para a caixa da mesma cor</li>
+                    <li>Se acertares, o objeto desaparecerá com uma animação positiva! </li>
+                    <li>Se errares, o objeto voltará à posição inicial (tenta novamente!)</li>
+                </ol>
+            </div>
+
+            <div class="info-section">
+                <h3>🎯 Níveis de Dificuldade</h3>
+                <ul>
+                    <li><strong>Nível Fácil:</strong> 4 objetos, 4 cores básicas</li>
+                    <li><strong>Nível Médio:</strong> 8 objetos, 4 cores básicas</li>
+                    <li><strong>Nível Difícil:</strong> 12 objetos, 4 cores básicas</li>
+                </ul>
+            </div>
+
+            <button class="start-button" onclick="closeModal()">Começar a Jogar! 🎮</button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho do Jogo -->
+    <header>
+        <h1>🎨 Caixas de Cores</h1>
+        <button id="infoButton" class="info-btn">ℹ️ Informações</button>
+        <div class="score-container">
+            <span class="score-label">Pontos:</span>
+            <span id="score" class="score-value">0</span>
+        </div>
+    </header>
+
+    <!-- Seletor de Nível -->
+    <div class="level-selector">
+        <label>Nível:</label>
+        <button class="level-btn active" data-level="easy">Fácil</button>
+        <button class="level-btn" data-level="medium">Médio</button>
+        <button class="level-btn" data-level="hard">Difícil</button>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="game-container">
+        <!-- Área de Objetos -->
+        <div class="objects-area" id="objectsArea">
+            <h2>Arrasta os Objetos</h2>
+            <div id="objectsContainer" class="objects-container">
+                <!-- Os objetos serão gerados dinamicamente pelo JavaScript -->
+            </div>
+        </div>
+
+        <!-- Área de Caixas de Classificação -->
+        <div class="boxes-area">
+            <h2>Caixas de Cores</h2>
+            <div class="boxes-container">
+                <div class="color-box" data-color="red" id="redBox">
+                    <div class="box-label">Vermelho</div>
+                    <div class="box-icon">🔴</div>
+                </div>
+                <div class="color-box" data-color="blue" id="blueBox">
+                    <div class="box-label">Azul</div>
+                    <div class="box-icon">🔵</div>
+                </div>
+                <div class="color-box" data-color="green" id="greenBox">
+                    <div class="box-label">Verde</div>
+                    <div class="box-icon">🟢</div>
+                </div>
+                <div class="color-box" data-color="yellow" id="yellowBox">
+                    <div class="box-label">Amarelo</div>
+                    <div class="box-icon">🟡</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensagem de Vitória -->
+    <div id="victoryMessage" class="victory-message hidden">
+        <div class="victory-content">
+            <h2>🎉 Parabéns! 🎉</h2>
+            <p>Classificaste todas as cores corretamente!</p>
+            <p class="final-score">Pontuação Final: <span id="finalScore">0</span></p>
+            <button class="restart-button" onclick="restartGame()">Jogar Novamente 🔄</button>
+        </div>
+    </div>
+
+    <!-- Feedback Visual -->
+    <div id="feedbackContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
