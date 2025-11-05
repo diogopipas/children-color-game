@@ -27,8 +27,8 @@
                     <li>Observa os objetos na área de jogo</li>
                     <li>Identifica a cor de cada objeto</li>
                     <li>Arrasta cada objeto para a caixa da mesma cor</li>
-                    <li>Se acertares, o objeto desaparecerá com uma animação positiva! </li>
-                    <li>Se errares, o objeto voltará à posição inicial (tenta novamente!)</li>
+                    <li>Se acertares, o objeto ficará dentro da caixa!</li>
+                    <li>Se errares, tenta novamente!</li>
                 </ol>
             </div>
 
@@ -48,7 +48,10 @@
     <!-- Cabeçalho do Jogo -->
     <header>
         <h1>🎨 Caixas de Cores</h1>
-        <button id="infoButton" class="info-btn">ℹ️ Informações</button>
+        <div class="header-buttons">
+            <button id="infoButton" class="info-btn">ℹ️ Informações</button>
+            <button id="soundButton" class="sound-btn">🔊 Som</button>
+        </div>
         <div class="score-container">
             <span class="score-label">Pontos:</span>
             <span id="score" class="score-value">0</span>
@@ -61,6 +64,7 @@
         <button class="level-btn active" data-level="easy">Fácil</button>
         <button class="level-btn" data-level="medium">Médio</button>
         <button class="level-btn" data-level="hard">Difícil</button>
+        <button class="reset-progress-btn" onclick="resetProgress()" title="Reiniciar todo o progresso">🔄 Reiniciar Progresso</button>
     </div>
 
     <!-- Container Principal -->
@@ -103,7 +107,10 @@
             <h2>🎉 Parabéns! 🎉</h2>
             <p>Classificaste todas as cores corretamente!</p>
             <p class="final-score">Pontuação Final: <span id="finalScore">0</span></p>
-            <button class="restart-button" onclick="restartGame()">Jogar Novamente 🔄</button>
+            <div class="victory-buttons">
+                <button id="nextLevelButton" class="next-level-button" onclick="goToNextLevel()" style="display: none;">Nível Seguinte ➡️</button>
+                <button class="restart-button" onclick="restartGame()">Jogar Novamente 🔄</button>
+            </div>
         </div>
     </div>
 

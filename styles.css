@@ -33,7 +33,13 @@ header h1 {
     min-width: 250px;
 }
 
-.info-btn {
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.info-btn, .sound-btn {
     background: #667eea;
     color: white;
     border: none;
@@ -45,9 +51,18 @@ header h1 {
     font-weight: bold;
 }
 
-.info-btn:hover {
+.info-btn:hover, .sound-btn:hover {
     background: #5568d3;
     transform: scale(1.05);
+}
+
+.sound-btn.sound-off {
+    background: #999;
+    opacity: 0.7;
+}
+
+.sound-btn.sound-off:hover {
+    background: #777;
 }
 
 .score-container {
@@ -103,6 +118,44 @@ header h1 {
     background: #667eea;
     color: white;
     border-color: #5568d3;
+}
+
+.level-btn.locked {
+    background: #d0d0d0;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.6;
+    position: relative;
+}
+
+.level-btn.locked:hover {
+    background: #d0d0d0;
+    transform: none;
+}
+
+.lock-icon {
+    font-size: 1em;
+    margin-left: 5px;
+}
+
+.reset-progress-btn {
+    background: #ff6b6b;
+    border: 3px solid transparent;
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.reset-progress-btn:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
 }
 
 /* Container Principal */
@@ -242,16 +295,17 @@ header h1 {
 }
 
 .color-box {
-    height: 150px;
+    min-height: 150px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     border: 4px dashed;
     transition: all 0.3s ease;
     position: relative;
     background: white;
+    padding: 10px;
 }
 
 .color-box.drag-over {
@@ -289,6 +343,50 @@ header h1 {
 #yellowBox {
     border-color: #ffdd44;
     background: linear-gradient(135deg, #fff 0%, #fffde7 100%);
+}
+
+/* Box Content Area */
+.box-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Objects placed in boxes */
+.draggable-object.placed-in-box {
+    width: 60px;
+    height: 60px;
+    cursor: default;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    animation: placeInBox 0.5s ease;
+}
+
+.draggable-object.placed-in-box:hover {
+    transform: none;
+}
+
+.draggable-object.placed-in-box .object-image {
+    width: 40px;
+    height: 40px;
+}
+
+.draggable-object.placed-in-box .object-name {
+    font-size: 0.65em;
+}
+
+@keyframes placeInBox {
+    0% {
+        transform: scale(1.5) rotate(10deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }
 
 /* Modal de Informações */
@@ -463,9 +561,32 @@ header h1 {
     font-weight: bold;
 }
 
+.victory-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.next-level-button {
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #44ff44 0%, #22aa22 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.3em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.next-level-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(34, 170, 34, 0.5);
+}
+
 .restart-button {
     padding: 15px 30px;
-    margin-top: 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
@@ -484,31 +605,38 @@ header h1 {
 /* Feedback Container */
 #feedbackContainer {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 20px;
+    right: 20px;
     z-index: 1500;
     pointer-events: none;
 }
 
 .feedback-message {
-    font-size: 4em;
+    font-size: 1.2em;
     font-weight: bold;
-    animation: feedbackPop 1s ease;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: feedbackSlide 1s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
-@keyframes feedbackPop {
+@keyframes feedbackSlide {
     0% {
-        transform: scale(0);
+        transform: translateX(150px);
         opacity: 0;
     }
-    50% {
-        transform: scale(1.2);
+    20% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    80% {
+        transform: translateX(0);
         opacity: 1;
     }
     100% {
-        transform: scale(0);
+        transform: translateX(150px);
         opacity: 0;
     }
 }
