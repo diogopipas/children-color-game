@@ -20,9 +20,9 @@ O **Jogo de Classificação de Cores** é uma ferramenta educativa que permite �
 - **Feedback Imediato**: Resposta visual e sonora a cada ação
 
 ### 🎯 Níveis de Dificuldade
-1. **Nível Fácil**: 4 objetos para classificar
-2. **Nível Médio**: 8 objetos diferentes
-3. **Nível Difícil**: 12 objetos desafiantes
+1. **Nível Fácil**: 4 objetos 
+2. **Nível Médio**: 7 objetos 
+3. **Nível Difícil**: 11 objetos 
 
 ### 🎨 Design
 - Interface limpa e colorida
@@ -40,7 +40,6 @@ O **Jogo de Classificação de Cores** é uma ferramenta educativa que permite �
 Este jogo desenvolve o **Raciocínio Lógico** através da **Classificação**. A criança aprenderá a:
 
 - Identificar que objetos diferentes podem ser agrupados sob uma característica comum (cor)
-- Ignorar outros atributos como forma, tamanho ou categoria semântica
 - Desenvolver conceitos abstratos de categorização
 - Melhorar a coordenação motora com o drag-and-drop
 - Aumentar a concentração e atenção aos detalhes
@@ -67,7 +66,7 @@ cd children-color-game
 
 1. **Escolha o Nível**: Selecione Fácil, Médio ou Difícil
 2. **Leia as Informações**: Clique no botão "ℹ️ Informações" para ver os benefícios e instruções
-3. **Arraste os Objetos**: Pegue cada objeto e arraste para a caixa da cor correspondente
+3. **Arraste os Objetos**: Pegue em cada objeto e arraste para a caixa da cor correspondente
 4. **Receba Feedback**: Veja e ouça o feedback imediato
 5. **Complete o Jogo**: Classifique todos os objetos corretamente para vencer!
 
@@ -160,14 +159,6 @@ Contribuições são bem-vindas! Sinta-se à vontade para:
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
-## 🙏 Agradecimentos
-
-Desenvolvido com ❤️ para ajudar no desenvolvimento cognitivo de crianças através de jogos educativos interativos.
-
----
-
-**Nota**: Este jogo foi desenvolvido com foco em acessibilidade e inclusão, proporcionando uma ferramenta útil para terapeutas, educadores e pais no apoio ao desenvolvimento infantil.
 
 ## 📞 Contato
 
